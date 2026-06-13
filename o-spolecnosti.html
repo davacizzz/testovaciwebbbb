@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O společnosti – Build &amp; Trade Partners</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --green: #3ec06a; --green-dark: #28a354; --white: #fff; --dark: #0d0f12; --text: #e8eaf0; --text-muted: #9ba3b0; }
+  body { font-family: 'Inter', sans-serif; background: var(--dark); color: var(--text); overflow-x: hidden; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 3rem; height: 68px;
+    background: rgba(10,12,16,0.92); backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .logo-icon { width: 36px; height: 36px; }
+  .logo-text { line-height: 1.15; }
+  .logo-text strong { display: block; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--white); }
+  .logo-text span { display: block; font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+  .nav-links a { font-size: 14px; font-weight: 500; color: var(--text); text-decoration: none; letter-spacing: 0.02em; transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--green); }
+  .nav-divider { width: 1px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 0.5rem; }
+  .nav-phone { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 600; color: var(--white) !important; text-decoration: none; }
+  .nav-phone svg { color: var(--green); }
+  .nav-toggle { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 36px; height: 36px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 200; }
+  .nav-toggle span { display: block; width: 100%; height: 1.5px; background: var(--white); transition: all 0.25s ease; transform-origin: center; }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+  /* PAGE HERO */
+  .page-hero {
+    padding: 10rem 3rem 5rem;
+    max-width: 1200px; margin: 0 auto;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .page-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 1.25rem; display: block; }
+  .page-hero h1 { font-size: clamp(2.2rem, 5vw, 4rem); font-weight: 900; color: var(--white); letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 1.5rem; text-transform: uppercase; }
+  .page-hero h1 em { font-style: normal; color: var(--green); }
+  .page-hero p { font-size: 1.1rem; color: var(--text-muted); max-width: 560px; line-height: 1.7; }
+
+  /* CONTENT */
+  .content-wrap { max-width: 1200px; margin: 0 auto; padding: 5rem 3rem; }
+
+  .intro-block { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-bottom: 5rem; }
+  .intro-block .lead { font-size: 1.15rem; color: var(--text); line-height: 1.75; }
+  .intro-block .lead strong { color: var(--white); font-weight: 700; }
+  .intro-aside { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  .highlight-box { background: #111418; border: 1px solid rgba(255,255,255,0.07); padding: 2rem; }
+  .highlight-box .hb-num { font-size: 2.5rem; font-weight: 900; color: var(--green); line-height: 1; margin-bottom: 0.5rem; }
+  .highlight-box .hb-label { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
+
+  .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--green); margin-bottom: 1rem; }
+  .section-title { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 800; color: var(--white); letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 1rem; max-width: 520px; }
+  .section-desc { font-size: 15px; color: var(--text-muted); line-height: 1.7; max-width: 480px; margin-bottom: 2.5rem; }
+
+  .pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5px; background: rgba(255,255,255,0.06); border: 1.5px solid rgba(255,255,255,0.06); margin-bottom: 5rem; }
+  .pillar { background: #111418; padding: 2.5rem 2rem; transition: background 0.2s; }
+  .pillar:hover { background: #161a20; }
+  .pillar-icon { width: 44px; height: 44px; border: 1.5px solid rgba(62,192,106,0.3); display: flex; align-items: center; justify-content: center; margin-bottom: 1.25rem; }
+  .pillar-icon svg { width: 22px; height: 22px; stroke: var(--green); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .pillar h3 { font-size: 15px; font-weight: 700; color: var(--white); margin-bottom: 0.6rem; }
+  .pillar p { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
+
+  /* CTA */
+  .cta-banner { background: var(--green); padding: 4rem 3rem; text-align: center; }
+  .cta-banner h2 { font-size: clamp(1.6rem, 3vw, 2.4rem); font-weight: 900; color: #fff; letter-spacing: -0.02em; text-transform: uppercase; margin-bottom: 0.75rem; }
+  .cta-banner p { font-size: 15px; color: rgba(255,255,255,0.82); max-width: 460px; margin: 0 auto 2rem; line-height: 1.6; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 15px 30px; font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all 0.22s ease; }
+  .btn-white { background: #fff; border: 1.5px solid #fff; color: #0d0f12; font-weight: 800; }
+  .btn-white:hover { background: rgba(255,255,255,0.9); }
+  .btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.4); color: var(--white); }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
+
+  /* FOOTER */
+  footer { background: #070910; padding: 2.5rem 3rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.06); }
+  .footer-copy { font-size: 13px; color: var(--text-muted); }
+  .footer-links { display: flex; gap: 1.5rem; }
+  .footer-links a { font-size: 13px; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--green); }
+
+  @media (max-width: 900px) {
+    nav { padding: 0 1.5rem; }
+    .page-hero { padding: 9rem 1.5rem 3.5rem; }
+    .content-wrap { padding: 3.5rem 1.5rem; }
+    .intro-block { grid-template-columns: 1fr; gap: 2.5rem; }
+    .pillars { grid-template-columns: repeat(2, 1fr); }
+    footer { padding: 2rem 1.5rem; }
+  }
+  @media (max-width: 600px) {
+    .nav-toggle { display: flex; }
+    .nav-links { display: none; position: fixed; top: 68px; left: 0; right: 0; bottom: 0; background: rgba(10,12,16,0.97); backdrop-filter: blur(16px); flex-direction: column; align-items: center; justify-content: center; gap: 2rem; z-index: 150; }
+    .nav-links.open { display: flex; }
+    .nav-links a { font-size: 18px; font-weight: 600; }
+    .nav-divider { width: 40px; height: 1px; margin: 0; }
+    .pillars { grid-template-columns: 1fr; }
+    .page-hero { padding: 8rem 1.25rem 3rem; }
+    .content-wrap { padding: 2.5rem 1.25rem; }
+    footer { flex-direction: column; align-items: flex-start; gap: 1rem; }
+    .footer-links { flex-wrap: wrap; gap: 1rem; }
+    .cta-banner { padding: 3rem 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="logo">
+    <svg class="logo-icon" viewBox="0 0 36 36" fill="none">
+      <polygon points="18,4 34,32 2,32" fill="none" stroke="#3ec06a" stroke-width="2.2" stroke-linejoin="round"/>
+      <line x1="18" y1="4" x2="18" y2="32" stroke="#3ec06a" stroke-width="1.5" opacity="0.5"/>
+    </svg>
+    <div class="logo-text"><strong>Build &amp; Trade</strong><span>Partners s.r.o.</span></div>
+  </a>
+  <button class="nav-toggle" aria-label="Otevřít menu" onclick="this.classList.toggle('open'); document.querySelector('.nav-links').classList.toggle('open')"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="index.html">Úvod</a></li>
+    <li><a href="o-spolecnosti.html" class="active">O společnosti</a></li>
+    <li><a href="nabidka.html" target="_blank">Nabídka nemovitostí</a></li>
+    <li><a href="sluzby.html" target="_blank">Služby</a></li>
+    <li><a href="kontakt.html" target="_blank">Kontakt</a></li>
+    <div class="nav-divider"></div>
+    <li><a href="tel:+420775929441" class="nav-phone"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.14 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.05 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 17l.92-.08z"/></svg>+420 775 929 441</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <span class="page-eyebrow">Kdo jsme</span>
+  <h1>Česká společnost<br>s <em>jasným cílem</em></h1>
+  <p>Jsme stabilní a flexibilní realitní firma zaměřená na rychlé a férové obchody s nemovitostmi všech typů – od bytů a rodinných domů až po pozemky a komerční objekty.</p>
+</div>
+
+<div class="content-wrap">
+
+  <div class="intro-block">
+    <div class="lead">
+      <p>Build &amp; Trade Partners s.r.o. je česká společnost, která se od svého vzniku soustředí na <strong>výkup, prodej a zprostředkování nemovitostí</strong>. Pracujeme s každým typem nemovitosti – bez ohledu na stav, lokalitu nebo složitost situace.</p>
+      <br>
+      <p>Klíčovou výhodou, která nás odlišuje od běžných realitních kanceláří, je <strong>vlastní kapitál</strong>. Nepotřebujeme bankovní financování ani zbytečné schvalovací procesy. Díky tomu dokážeme složit rezervaci nebo celou nemovitost vykoupit <strong>do 24 hodin od dohody</strong>.</p>
+      <br>
+      <p>Každému klientovi nabízíme <strong>bezplatné a nezávazné ocenění</strong>, a to včetně osobní prohlídky přímo na místě. Přijedeme za vámi, nemovitost si společně projdeme a okamžitě navrhneme konkrétní řešení.</p>
+    </div>
+    <div class="intro-aside">
+      <div class="highlight-box">
+        <div class="hb-num">24 h</div>
+        <div class="hb-label">Do 24 hodin jsme schopni složit rezervaci nebo vykoupit nemovitost – bez čekání na banku.</div>
+      </div>
+      <div class="highlight-box">
+        <div class="hb-num">0 Kč</div>
+        <div class="hb-label">Ocenění nemovitosti i s osobní návštěvou je zcela zdarma a bez jakýchkoliv závazků.</div>
+      </div>
+      <div class="highlight-box">
+        <div class="hb-num">Vše</div>
+        <div class="hb-label">Byty, domy, pozemky i komerční objekty – pracujeme se všemi typy nemovitostí v jakémkoliv stavu.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-label">Naše principy</div>
+  <h2 class="section-title">Čtyři hodnoty, na kterých stavíme</h2>
+  <p class="section-desc">Nejde nám jen o uzavření obchodu. Záleží nám na tom, aby každý klient odcházel s pocitem, že byl celý proces zvládnutý dobře.</p>
+
+  <div class="pillars">
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <h3>Férové jednání</h3>
+      <p>Podmínky spolupráce vysvětlíme jasně a předem. Žádné skryté klauzule ani nepříjemná překvapení při podpisu.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+      <h3>Rychlost rozhodování</h3>
+      <p>Vlastní kapitál nám dává svobodu jednat okamžitě. Obchody uzavíráme v řádu dní, nikoliv týdnů.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+      <h3>Diskrétnost</h3>
+      <p>Respektujeme soukromí každého klienta. Vše probíhá s plnou mlčenlivostí a ohledem na vaše přání.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <h3>Zkušenosti z praxe</h3>
+      <p>Za námi stojí roky práce v realitách i stavebnictví. Problémy, které ostatní řeší týdny, my zvládáme rutinně.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+      <h3>Vlastní kapitál</h3>
+      <p>Nepotřebujeme schválení od banky. Máme prostředky k okamžitému jednání, což vám šetří čas i nervy.</p>
+    </div>
+    <div class="pillar">
+      <div class="pillar-icon"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <h3>Znalost regionu</h3>
+      <p>Působíme v Praze i Ostravě. Trh v obou lokalitách známe zevnitř – víme, kde jsou příležitosti i rizika.</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="cta-banner">
+  <h2>Zjistěte hodnotu vaší nemovitosti zdarma</h2>
+  <p>Přijedeme za vámi, prohlédneme nemovitost a ihned navrhneme řešení. Žádné závazky.</p>
+  <a href="kontakt.html" target="_blank" class="btn btn-white">Domluvit bezplatnou prohlídku</a>
+</div>
+
+<footer>
+  <span class="footer-copy">© 2024 Build &amp; Trade Partners s.r.o. — +420 775 929 441</span>
+  <div class="footer-links">
+    <a href="#">Zásady ochrany osobních údajů</a>
+    <a href="#">Smluvní podmínky</a>
+    <a href="kontakt.html" target="_blank">Napište nám</a>
+  </div>
+</footer>
+
+</body>
+</html>
